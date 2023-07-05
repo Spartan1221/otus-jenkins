@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  nginx:
+    privileged: true
+    restart: always
+    image: nginx:latest
+    container_name: nginx
+    hostname: nginx
+    volumes:
+      - ./nginx/confs:/etc/nginx/conf.d/
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:80
+
+  registry:
+    image: registry
+    restart: always
+    container_name: registry
+    hostname: registry
+    volumes:
+      - ./registry:/var/lib/registry
+    ports:
+      - "5005:5005"
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5005
+
+  jenkins:
+    restart: always
+    image: jenkins/jenkins
+    hostname: jenkins
+    user: root
+    environment:
+      - JAVA_OPTS="-Dhudson.model.DownloadService.noSignatureCheck=true -Dcom.cloudbees.workflow.rest.external.JobExt.maxRunsPerJob=20 -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow"
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - /var/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 

@@ -1,0 +1,32 @@
+- job-template:
+    name: 'ui-tests'
+    description: 'Running UI tests'
+    project-type: pipeline
+    concurrent: false
+    logrotate:
+      daysToKeep: 30
+      numToKeep: 10
+    properties:
+      - build-discarder:
+          num-to-keep: 10
+    parameters:
+      - string:
+          name: BRANCH
+          default: master
+          description: 'Branch to tests repo'
+      - string:
+          name: BROWSER_NAME
+          default: chrome
+          description: 'Browser name' 
+      - string:
+          name: BROWSER_VERSION
+          default: 112.0
+          description: 'Browser version'
+      - string:
+          name: GRID_URL
+          default: http://127.0.0.1:4444/wd/hub
+          description: Grid URL
+    pipeline-scm:
+      scm:
+      - git-jenkins-jobs
+      script-path: jenkins/ui-tests.groovy

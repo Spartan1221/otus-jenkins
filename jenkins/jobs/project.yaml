@@ -1,0 +1,9 @@
+---
+- project:
+    name: 'QA'
+    job-description: '<h4 style="color:#999696;">QA jobs</h4>'
+    jobs:
+      - 'ui-tests'
+      - 'appium-tests'
+      - 'api-tests'
+      - 'wiremock-tests' 
