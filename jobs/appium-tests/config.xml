@@ -1,0 +1,80 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1316.vd2290d3341a_f">
+    <actions/>
+    <description>Running Appium tests&lt;!-- Managed by Jenkins Job Builder --&gt;</description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <jenkins.model.BuildDiscarderProperty>
+            <strategy class="hudson.tasks.LogRotator">
+                <daysToKeep>30</daysToKeep>
+                <numToKeep>10</numToKeep>
+                <artifactDaysToKeep>-1</artifactDaysToKeep>
+                <artifactNumToKeep>-1</artifactNumToKeep>
+            </strategy>
+        </jenkins.model.BuildDiscarderProperty>
+        <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+            <abortPrevious>false</abortPrevious>
+        </org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+        <hudson.model.ParametersDefinitionProperty>
+            <parameterDefinitions>
+                <hudson.model.StringParameterDefinition>
+                    <name>BRANCH</name>
+                    <description>Branch to tests repo</description>
+                    <defaultValue>master</defaultValue>
+                    <trim>false</trim>
+                </hudson.model.StringParameterDefinition>
+                <hudson.model.StringParameterDefinition>
+                    <name>PLATFORM_NAME</name>
+                    <description>Platform Name</description>
+                    <defaultValue>Android</defaultValue>
+                    <trim>false</trim>
+                </hudson.model.StringParameterDefinition>
+                <hudson.model.StringParameterDefinition>
+                    <name>DEVICE_NAME</name>
+                    <description>Device name</description>
+                    <defaultValue>otus</defaultValue>
+                    <trim>false</trim>
+                </hudson.model.StringParameterDefinition>
+                <hudson.model.StringParameterDefinition>
+                    <name>PLATFORM_VERSION</name>
+                    <description>Platform version</description>
+                    <defaultValue>11.0</defaultValue>
+                    <trim>false</trim>
+                </hudson.model.StringParameterDefinition>
+                <hudson.model.StringParameterDefinition>
+                    <name>APPIUM_URL</name>
+                    <description>Appium URL</description>
+                    <defaultValue>http://127.0.0.1:4723/wd/hub</defaultValue>
+                    <trim>false</trim>
+                </hudson.model.StringParameterDefinition>
+            </parameterDefinitions>
+        </hudson.model.ParametersDefinitionProperty>
+    </properties>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@3697.vb_470e454c232">
+        <scm class="hudson.plugins.git.GitSCM" plugin="git@5.1.0">
+            <configVersion>2</configVersion>
+            <userRemoteConfigs>
+                <hudson.plugins.git.UserRemoteConfig>
+                    <name>origin</name>
+                    <refspec>${BRANCH}</refspec>
+                    <url>https://github.com/Spartan1221/otus-apium.git</url>
+                    <credentialsId>jenkins</credentialsId>
+                </hudson.plugins.git.UserRemoteConfig>
+            </userRemoteConfigs>
+            <branches>
+                <hudson.plugins.git.BranchSpec>
+                    <name>FETCH_HEAD</name>
+                </hudson.plugins.git.BranchSpec>
+            </branches>
+            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+            <submoduleCfg class="empty-list"/>
+            <extensions>
+                <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+            </extensions>
+        </scm>
+        <scriptPath>jenkins/appium-tests.groovy</scriptPath>
+        <lightweight>false</lightweight>
+    </definition>
+    <disabled>false</disabled>
+</flow-definition>
+
