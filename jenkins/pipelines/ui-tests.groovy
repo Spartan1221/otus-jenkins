@@ -9,7 +9,7 @@ timeout(180) {
       }
       stage('Checkout') {
         checkout scm
-      }K
+      }
       stage('Run tests') {
         tests_exit_code = sh(
             script: "gradle test -Dbrowser=$BROWSER_NAME -DbrowserVersion=$BROWSER_VERSION -DwebDriverRemoteUrl=$GRID_URL",
